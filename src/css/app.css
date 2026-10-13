@@ -231,11 +231,11 @@ button:active { transform: scale(.97); }
 .title-row {
   height: auto;
   min-height: 0;
-  padding: 4px 0 8px;
+  padding: 4px 0 0;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: 12px;
   border-bottom: 0;
 }
 .title-meta {
@@ -250,9 +250,11 @@ button:active { transform: scale(.97); }
   width: 100%;
   margin-left: 0;
   display: block;
-  padding: 8px 0 4px;
+  padding: 10px 12px;
   border-top: 1px solid #3d4046;
   border-bottom: 0;
+  border-radius: 8px;
+  background: #252629;
 }
 .steps {
   position: relative;
@@ -326,12 +328,22 @@ button:active { transform: scale(.97); }
 .steps button:disabled:active { transform: none; }
 
 .output-row {
-  height: 48px;
-  gap: 10px;
+  height: 40px;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
   border-top: 0;
 }
-.viewport { height: calc(100% - 150px); }
-.frame-review { height: calc(100% - 150px); }
+.output-row b { margin: 0; }
+.workspace-content {
+  min-height: 0;
+  height: calc(100% - 117px);
+  padding-top: 12px;
+  border-top: 1px solid #36383d;
+}
+.viewport { height: calc(100% - 40px); }
+.frame-review { height: calc(100% - 40px); }
 
 .remove-image {
   height: 30px;
@@ -356,8 +368,8 @@ button:active { transform: scale(.97); }
 }
 
 @media (min-width: 1440px) {
-  .title-row { min-height: 0; padding: 6px 0 10px; gap: 12px; }
-  .wizard-progress { padding: 9px 0 5px; }
+  .title-row { min-height: 0; padding: 6px 0 0; gap: 12px; }
+  .wizard-progress { padding: 12px 14px; }
   .steps button { height: 46px; min-width: 0; padding: 7px 10px; gap: 9px; }
   .step-marker { width: 26px; height: 26px; flex-basis: 26px; font-size: 10px; }
   .step-connector { margin-top: 23px; }
@@ -365,9 +377,10 @@ button:active { transform: scale(.97); }
   .step-copy b { font-size: 10px; }
   .step-copy small { font-size: 8px; }
   .remove-image { height: 34px; font-size: 11px; }
-  .output-row { height: 52px; gap: 12px; }
-  .viewport { height: calc(100% - 168px); }
-  .frame-review { height: calc(100% - 168px); }
+  .output-row { height: 44px; gap: 14px; }
+  .workspace-content { height: calc(100% - 131px); padding-top: 14px; }
+  .viewport { height: calc(100% - 44px); }
+  .frame-review { height: calc(100% - 44px); }
 }
 
 @media (max-width: 1200px) {
@@ -378,6 +391,6 @@ button:active { transform: scale(.97); }
 @media (min-width: 1200px) and (max-width: 1439px) {
   .editor { padding: 6px 8px 10px; }
   .editor-card { height: min(650px, calc(100% - 4px)); }
-  .viewport { height: calc(100% - 150px); }
-  .frame-review { height: calc(100% - 150px); }
+  .viewport { height: calc(100% - 40px); }
+  .frame-review { height: calc(100% - 40px); }
 }
