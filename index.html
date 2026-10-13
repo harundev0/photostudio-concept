@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GoThru · Image to Video Generator</title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="src/css/app.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header class="topbar">
+    <img class="logo" src="assets/logo.png" alt="GoThru">
+    <div class="header-actions">
+      <button><i data-lucide="eye"></i>Preview</button>
+      <button><i data-lucide="folder"></i>Fils Manager</button>
+      <button class="blue"><i data-lucide="square-pen"></i>Edit</button>
+      <button class="green"><i data-lucide="upload"></i>Upload - 1 File(s)</button>
+      <button class="round" aria-label="Settings"><i data-lucide="settings"></i></button>
+      <div class="account"><img src="assets/avatar.png" alt=""><span><b>2x Akito</b><small>akito1169@gmail.com</small></span><i data-lucide="chevron-down" aria-hidden="true"></i></div>
+    </div>
+  </header>
+
+  <div class="crumbbar">
+    <div class="quick"><button aria-label="Search"><i data-lucide="search"></i></button><button aria-label="Zoom"><i data-lucide="zoom-in"></i></button><button aria-label="Edit"><i data-lucide="pencil"></i></button></div>
+    <div class="crumb">My Computer <i data-lucide="chevron-right"></i> ZxAkito <i data-lucide="chevron-right"></i> <b>Panorama (19)</b> <i data-lucide="copy"></i><i data-lucide="bookmark"></i></div>
+  </div>
+
+  <main class="app-shell">
+    <aside class="files">
+      <div class="file-tools"><i data-lucide="circle-plus"></i><i data-lucide="copy"></i><i data-lucide="undo-2"></i><i data-lucide="redo-2"></i><i class="danger" data-lucide="trash-2"></i></div>
+      <div class="file-head"><span>Name ↑</span><span>Date Crea...</span><span>Date Modi...</span><span>Size</span></div>
+      <div class="assets" id="assetGrid">
+        <button class="asset" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_capture_1.jpg" alt=""><span>gothru_capture<br>_20...133336.jpg</span></button>
+        <button class="asset" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_capture_2.jpg" alt=""><span>gothru_capture<br>_20...109476.jpg</span></button>
+        <button class="asset" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_capture_3.jpg" alt=""><span>gothru_capture<br>_20...104776.jpg</span></button>
+        <button class="asset" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_arrow.png" alt=""><span>logo_test_arro<br>w.png</span></button>
+        <button class="asset selected" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_mmm.jpg" alt=""><span>mmm.jpg</span></button>
+        <button class="asset video"><span class="play"><i data-lucide="play"></i></span><span>loope_video_20<br>2...135553.mp4</span></button>
+        <button class="asset video"><span class="play"><i data-lucide="play"></i></span><span>gothru_video_20<br>2...135422.mp4</span></button>
+        <button class="asset video"><span class="play"><i data-lucide="play"></i></span><span>mmm_video_20<br>2...155553.mp4</span></button>
+        <button class="asset" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_mmmm.jpg" alt=""><span>mmmm.jpg</span></button>
+        <button class="asset video"><span class="play"><i data-lucide="play"></i></span><span>Nanas copy (1).<br>mp4</span></button>
+        <button class="asset video"><span class="play"><i data-lucide="play"></i></span><span>Nanas copy (2).<br>mp4</span></button>
+        <button class="asset video"><span class="play"><i data-lucide="play"></i></span><span>Nanas.mp4</span></button>
+        <button class="asset" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_sadads.jpg" alt=""><span>sadads.img</span></button>
+        <button class="asset" data-image-src="assets/main_scene.jpg"><img src="assets/thumb_ui.png" alt=""><span>UI.png</span></button>
+      </div>
+      <div class="file-zoom"><i data-lucide="minus"></i><input type="range" min="0" max="100" value="35" aria-label="Thumbnail size"><i data-lucide="plus"></i></div>
+    </aside>
+
+    <section class="editor">
+      <div class="editor-card">
+        <div class="title-row">
+          <div class="title-meta">
+            <div class="editor-heading"><h1>Image to Video Generator</h1><p>Status: <span id="statusText">Select an image</span></p></div>
+            <button id="removeImageButton" class="remove-image" hidden><i data-lucide="trash-2"></i>Remove Image</button>
+          </div>
+          <div class="wizard-progress" aria-live="polite"><div class="steps" id="steps">
+          <button data-step="1"><span class="step-marker">1</span><span class="step-copy"><b>Select Image</b><small>Choose source</small></span></button>
+          <i class="step-connector" aria-hidden="true"></i>
+          <button data-step="2"><span class="step-marker">2</span><span class="step-copy"><b>Start Frame</b><small>Set opening</small></span></button>
+          <i class="step-connector" aria-hidden="true"></i>
+          <button data-step="3"><span class="step-marker">3</span><span class="step-copy"><b>End Frame</b><small>Set closing</small></span></button>
+          <i class="step-connector" aria-hidden="true"></i>
+          <button data-step="4"><span class="step-marker">4</span><span class="step-copy"><b>Video Settings</b><small>Generate</small></span></button>
+          </div></div>
+        </div>
+        <div class="output-row"><b>Output</b><div id="outputPath">No folder selected</div><button>Browse</button></div>
+        <div class="viewport" id="viewport">
+          <img id="mainImage" src="assets/main_scene.jpg" alt="Selected house exterior">
+          <div class="depth-frames" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="crop-box" id="cropBox">
+            <span class="crop-title">Move &amp; Adjust</span>
+            <button class="resize-handle resize-top" data-edge="top" aria-label="Resize crop from top"></button>
+            <button class="resize-handle resize-right" data-edge="right" aria-label="Resize crop from right"></button>
+            <button class="resize-handle resize-bottom" data-edge="bottom" aria-label="Resize crop from bottom"></button>
+            <button class="resize-handle resize-left" data-edge="left" aria-label="Resize crop from left"></button>
+            <button class="move" aria-label="Move crop" title="Drag to move. Arrow keys also work."><i data-lucide="hand"></i></button>
+          </div>
+          <div class="select-overlay"><i data-lucide="image-plus"></i><strong>Select an image to begin</strong><span>Choose a file from File Manager</span></div>
+        </div>
+        <div class="frame-review" id="frameReview" hidden>
+          <div class="review-heading"><p>Both frames are set. Choose a camera movement, then generate the video.</p><button id="resetStartFrame"><i data-lucide="scan"></i>Set Start Frame</button></div>
+          <div class="frame-review-grid">
+            <article class="frame-card start"><header><strong>Start Frame</strong><button class="remove-frame" data-frame="start"><i data-lucide="trash-2"></i>Remove</button></header><img src="assets/start_frame.jpg" alt="Selected start frame"></article>
+            <article class="frame-card end"><header><strong>End Frame</strong><button class="remove-frame" data-frame="end"><i data-lucide="trash-2"></i>Remove</button></header><img src="assets/end_frame.jpg" alt="Selected end frame"></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="controls">
+      <div class="control-top">
+        <div class="panel-title"><i data-lucide="chevron-left"></i><span id="panelTitle">Camera Controls</span><button id="helpButton" aria-label="Help"><i data-lucide="circle-help"></i></button></div>
+        <div id="cameraPanel" class="camera-panel">
+          <div class="range-row" data-name="horizontal"><label for="horizontalRange">Horizontal <output>2.0</output></label><input id="horizontalRange" type="range" min="-5" max="5" step="0.1" value="2"></div>
+          <div class="range-row" data-name="vertical"><label for="verticalRange">Vertical <output>0.0</output></label><input id="verticalRange" type="range" min="-5" max="5" step="0.1" value="0"></div>
+          <div class="range-row" data-name="zoom"><label for="zoomRange">Zoom <output>1.0x</output></label><input id="zoomRange" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+          <div class="range-row" data-name="pan"><label for="panRange">Pan <output>0.0</output></label><input id="panRange" type="range" min="-1" max="1" step="0.1" value="0"></div>
+          <div class="range-row" data-name="tilt"><label for="tiltRange">Tilt <output>0.0</output></label><input id="tiltRange" type="range" min="-1" max="1" step="0.1" value="0"></div>
+          <div class="range-row" data-name="rotate"><label for="rotateRange">Rotate <output>0.0</output></label><input id="rotateRange" type="range" min="-1" max="1" step="0.1" value="0"></div>
+        </div>
+        <div id="settingsPanel" class="settings-panel" hidden>
+          <span class="field-label">API Key</span><button class="select"><span><b>Veo</b><small>Google AI</small></span><i data-lucide="chevron-down"></i></button>
+          <label>Generation Engine</label><div class="engine"><button id="veoButton"><i data-lucide="cloud"></i>Google Veo 3.1</button><button id="geminiButton" class="active"><i data-lucide="trending-up"></i>Gemini Omni</button></div>
+          <p>Control camera movement by drawing a path on the preview image.</p>
+          <label for="ratio">Aspect ratio</label><select id="ratio"><option>16:9</option><option>9:16</option><option>1:1</option></select>
+          <p>Remove the Start Frame to change the aspect ratio.</p>
+          <span class="field-label">Camera Path (Draw)</span><div class="path"><i data-lucide="arrow-up"></i><span><b>Walk Forward 1 to Turn</b><small>2 camera movement steps</small></span><button>Clear</button></div>
+          <label for="motionPrompt">Motion Prompt</label><textarea id="motionPrompt">First-person continuous walkthrough shot following the drawn trajectory line. The camera physically walks and travels forward along the floor path. Upon reaching the corner turn at the end of the straight path, the camera rotates its viewing direction 80 degrees to the left, turning and pivoting to face the left side and continuing forward in that new direction.</textarea>
+          <div class="prompt-meta"><span>Optional. Leave blank to let model choose natural motion.</span><output>364 / 2,000</output></div>
+        </div>
+      </div>
+      <div class="control-actions">
+        <button id="applyButton" class="apply">Apply movement</button>
+        <button id="nextButton" class="next">Capture &amp; Next Step</button>
+        <button id="generateButton" class="next" hidden><i data-lucide="film"></i>Generate Video</button>
+      </div>
+    </aside>
+  </main>
+  <script src="src/js/wizard-state.js"></script>
+  <script src="src/js/crop-state.js"></script>
+  <script src="src/js/app.js"></script>
+</body>
+</html>

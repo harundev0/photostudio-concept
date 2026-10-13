@@ -1,0 +1,4 @@
+.playwright-mcp/
+*.log
+*-final.png
+*-fixed.png

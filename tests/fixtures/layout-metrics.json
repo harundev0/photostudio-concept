@@ -1,0 +1,9 @@
+{
+  "viewport": { "width": 1918, "height": 913 },
+  "document": { "width": 1918, "height": 913 },
+  "topbar": { "height": 52 },
+  "leftPanel": { "width": 276 },
+  "rightPanel": { "width": 304 },
+  "editorCard": { "height": 696 },
+  "preview": { "width": 1280, "height": 554 }
+}
