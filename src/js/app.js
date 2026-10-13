@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const generateButton = document.querySelector('#generateButton');
   const frameReview = document.querySelector('#frameReview');
   const removeImageButton = document.querySelector('#removeImageButton');
+  const topCaptureButton = document.querySelector('#topCaptureButton');
   const statusText = document.querySelector('#statusText');
   const cropBox = document.querySelector('#cropBox');
   const depthFrames = [...document.querySelectorAll('.depth-frames i')];
@@ -70,8 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
     nextButton.hidden = settings;
     generateButton.hidden = !settings;
     removeImageButton.hidden = !view.showSelectedImage;
+    topCaptureButton.hidden = !view.showTopCapture;
+    nextButton.hidden = !view.showBottomNext;
     nextButton.disabled = select && !state.imageSelected;
-    nextButton.textContent = select ? 'Select & Next Step' : 'Capture & Next Step';
+    nextButton.textContent = 'Select & Next Step';
     statusText.textContent = select
       ? state.imageSelected ? 'Image selected' : 'Select an image'
       : settings ? 'Ready to generate' : state.step === 2 ? 'Set start frame' : 'Set end frame';
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  nextButton.addEventListener('click', () => {
+  function advance() {
     state = WizardState.nextStep(state);
     if (state.step === 3) {
       state = WizardState.setControl(state, 'horizontal', 3);
@@ -98,7 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     syncRanges();
     render();
-  });
+  }
+
+  nextButton.addEventListener('click', advance);
+  topCaptureButton.addEventListener('click', advance);
 
   document.querySelectorAll('.range-row input').forEach((input) => {
     input.addEventListener('input', () => {

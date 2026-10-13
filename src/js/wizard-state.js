@@ -41,10 +41,13 @@
   }
 
   function getStepView(state) {
+    const framing = state.step === 2 || state.step === 3;
     return {
       showFrameReview: state.step === 4,
-      showCropPreview: state.step === 2 || state.step === 3,
+      showCropPreview: framing,
       showSelectedImage: state.step === 1 && state.imageSelected,
+      showTopCapture: framing,
+      showBottomNext: state.step === 1,
     };
   }
 

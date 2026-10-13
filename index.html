@@ -23,7 +23,7 @@
 
   <div class="crumbbar">
     <div class="quick"><button aria-label="Search"><i data-lucide="search"></i></button><button aria-label="Zoom"><i data-lucide="zoom-in"></i></button><button aria-label="Edit"><i data-lucide="pencil"></i></button></div>
-    <div class="crumb">My Computer <i data-lucide="chevron-right"></i> ZxAkito <i data-lucide="chevron-right"></i> <b>Panorama (19)</b> <i data-lucide="copy"></i><i data-lucide="bookmark"></i></div>
+    <nav class="crumb" aria-label="Current folder"><span>My Computer</span><i data-lucide="chevron-right"></i><span>ZxAkito</span><i data-lucide="chevron-right"></i><b>Panorama (19)</b><span class="crumb-actions"><i data-lucide="copy"></i><i data-lucide="bookmark"></i></span></nav>
   </div>
 
   <main class="app-shell">
@@ -54,6 +54,7 @@
         <div class="title-row">
           <div class="title-meta">
             <div class="editor-heading"><h1>Image to Video Generator</h1><p>Status: <span id="statusText">Select an image</span></p></div>
+            <button id="topCaptureButton" class="top-capture" hidden>Capture &amp; Next Step</button>
             <button id="removeImageButton" class="remove-image" hidden><i data-lucide="trash-2"></i>Remove Image</button>
           </div>
           <div class="wizard-progress" aria-live="polite"><div class="steps" id="steps">
@@ -67,7 +68,7 @@
           </div></div>
         </div>
         <div class="workspace-content">
-        <div class="output-row"><b>Output</b><div id="outputPath">No folder selected</div><button>Browse</button></div>
+        <div class="output-row"><b>Output</b><div id="outputPath">/volumes/ZxAkito/Panorama/image-to-video</div><button>Browse</button></div>
         <div class="viewport" id="viewport">
           <img id="mainImage" src="assets/main_scene.jpg" alt="Selected house exterior">
           <div class="depth-frames" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
@@ -116,7 +117,7 @@
       </div>
       <div class="control-actions">
         <button id="applyButton" class="apply">Apply movement</button>
-        <button id="nextButton" class="next">Capture &amp; Next Step</button>
+        <button id="nextButton" class="next">Select &amp; Next Step</button>
         <button id="generateButton" class="next" hidden><i data-lucide="film"></i>Generate Video</button>
       </div>
     </aside>
