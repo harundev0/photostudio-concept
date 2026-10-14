@@ -719,6 +719,26 @@ button:active { transform: scale(.97); }
   border-bottom: 1px solid var(--line);
   background: #242527;
 }
+.option-one .sidebar-step-actions {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: #2a2b2d;
+}
+.option-one .sidebar-step-actions .step-navigation {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.option-one .sidebar-step-actions .step-navigation button {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.option-one .sidebar-step-actions .step-navigation:has(.back[hidden]) > .next:not([hidden]) {
+  grid-column: 1 / -1;
+}
 .sidebar-progress-meta,
 .sidebar-progress-meta > span {
   display: flex;

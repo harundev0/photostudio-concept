@@ -46,24 +46,30 @@ option_one_path = root / "option-1.html"
 option_two_path = root / "option-2.html"
 option_one = parse(option_one_path)
 option_two = parse(option_two_path)
+option_one_html = option_one_path.read_text()
 option_two_html = option_two_path.read_text()
 
 assert "option-one" in option_one.body_classes
 assert option_one.output_parents == [{"control-actions"}]
-assert option_one.stylesheets == ["src/css/app.css?v=option-wizard"]
+assert option_one.stylesheets == ["src/css/app.css?v=balanced-step-navigation"]
 assert option_one.scripts[-3:] == [
     "src/js/wizard-state.js?v=option-wizard",
     "src/js/crop-state.js",
-    "src/js/app.js?v=option-wizard",
+    "src/js/app.js?v=top-step-navigation",
 ]
 assert {"sidebarProgress", "sidebarStepNumber", "sidebarStepName", "backButton"} <= option_one.ids
+assert option_one.id_ancestors["backButton"] >= {"sidebar-step-actions"}
+assert option_one.id_ancestors["nextButton"] >= {"sidebar-step-actions"}
+assert option_one.id_ancestors["generateButton"] >= {"sidebar-step-actions"}
+assert option_one_html.index('class="sidebar-step-actions"') < option_one_html.index('class="panel-title"')
+assert option_one_html.index('class="panel-title"') < option_one_html.index('class="output-row"')
 assert "option-two" in option_two.body_classes
 assert option_two.output_parents == []
 assert option_two.stylesheets == ["src/css/app.css?v=wizard-divider"]
 assert option_two.scripts[-3:] == [
     "src/js/wizard-state.js?v=focus-stepper",
     "src/js/crop-state.js",
-    "src/js/app.js?v=focus-stepper",
+    "src/js/app.js?v=hide-step-four-action",
 ]
 assert option_two_html.index('id="removeImageButton"') < option_two_html.index('class="wizard-progress"')
 assert {"wizardStepCount", "nextButton", "topCaptureButton", "generateButton"} <= option_two.ids
@@ -82,6 +88,11 @@ assert 'data-index="01"' in option_two_html
 assert 'data-index="04"' in option_two_html
 
 css = (root / "src/css/app.css").read_text()
+app_js = (root / "src/js/app.js").read_text()
+assert ".option-one .sidebar-step-actions" in css
+assert ".option-one .sidebar-step-actions .step-navigation {\n  grid-template-columns: repeat(2, minmax(0, 1fr));" in css
+assert ".option-one .sidebar-step-actions .step-navigation button {\n  width: 100%;\n  min-width: 0;\n  height: 36px;\n  border-radius: 6px;" in css
+assert "generateButton.hidden = !settings || optionTwo;" in app_js
 assert ".option-two .steps {\n  position: static;\n  width: 100%;\n  display: flex;" in css
 assert ".option-two .steps button::after" in css
 assert "transform: scaleX(1);" in css
