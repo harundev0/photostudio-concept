@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const applyButton = document.querySelector('#applyButton');
   const nextButton = document.querySelector('#nextButton');
   const generateButton = document.querySelector('#generateButton');
+  const backButton = document.querySelector('#backButton');
   const frameReview = document.querySelector('#frameReview');
   const removeImageButton = document.querySelector('#removeImageButton');
   const topCaptureButton = document.querySelector('#topCaptureButton');
@@ -21,6 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const moveHandle = cropBox.querySelector('.move');
   let cropStates = { 2: CropState.createCropState(), 3: CropState.createCropState() };
   let drag = null;
+  const optionOne = document.body.classList.contains('option-one');
+  const optionTwo = document.body.classList.contains('option-two');
+  const stepDetails = [
+    ['01', 'SELECT IMAGE', 'Choose your source image'],
+    ['02', 'START FRAME', 'Frame the opening shot'],
+    ['03', 'END FRAME', 'Compose the closing shot'],
+    ['04', 'VIDEO SETTINGS', 'Review and generate your video'],
+  ];
 
   function currentCrop() {
     return cropStates[state.step] || cropStates[2];
@@ -57,6 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const settings = state.step === 4;
     const select = state.step === 1;
     const view = WizardState.getStepView(state);
+    if (optionOne) {
+      const [number, name, hint] = stepDetails[state.step - 1];
+      document.querySelector('#sidebarStepNumber').textContent = number;
+      document.querySelector('#sidebarStepName').textContent = name;
+      document.querySelector('#sidebarStepCount').textContent = `${state.step} / 4`;
+      document.querySelector('#sidebarStepHint').textContent = hint;
+      document.querySelector('#sidebarProgress').setAttribute('aria-label', `Step ${state.step} of 4: ${name}`);
+      document.querySelectorAll('.sidebar-progress-track i').forEach((segment, index) => {
+        segment.classList.toggle('done', index < state.step - 1);
+        segment.classList.toggle('active', index === state.step - 1);
+      });
+    }
     viewport.classList.toggle('select-mode', select && !state.imageSelected);
     viewport.classList.toggle('image-selected-mode', view.showSelectedImage);
     viewport.hidden = !view.showCropPreview && !select;
@@ -71,10 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
     nextButton.hidden = settings;
     generateButton.hidden = !settings;
     removeImageButton.hidden = !view.showSelectedImage;
-    topCaptureButton.hidden = !view.showTopCapture;
-    nextButton.hidden = !view.showBottomNext;
+    topCaptureButton.hidden = optionOne || !view.showTopCapture;
+    nextButton.hidden = optionOne ? settings : !view.showBottomNext;
+    if (backButton) backButton.hidden = !optionOne || state.step === 1;
     nextButton.disabled = select && !state.imageSelected;
-    nextButton.textContent = 'Select & Next Step';
+    if (optionTwo) {
+      const action = WizardState.getPrimaryAction(state);
+      document.querySelector('#wizardStepCount').textContent = `Step ${state.step} of 4`;
+      [nextButton, topCaptureButton, generateButton].forEach((button) => {
+        const label = button.querySelector('.action-label');
+        if (label && !button.hidden) label.textContent = action.label;
+      });
+    }
+    if (!optionOne && !optionTwo) nextButton.textContent = 'Select & Next Step';
     statusText.textContent = select
       ? state.imageSelected ? 'Image selected' : 'Select an image'
       : settings ? 'Ready to generate' : state.step === 2 ? 'Set start frame' : 'Set end frame';
@@ -105,6 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   nextButton.addEventListener('click', advance);
   topCaptureButton.addEventListener('click', advance);
+  if (backButton) {
+    backButton.addEventListener('click', () => {
+      state = WizardState.previousStep(state);
+      syncRanges();
+      render();
+    });
+  }
 
   document.querySelectorAll('.range-row input').forEach((input) => {
     input.addEventListener('input', () => {
@@ -218,10 +255,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   generateButton.addEventListener('click', () => {
     generateButton.disabled = true;
-    generateButton.textContent = 'Generating Video...';
+    const actionLabel = generateButton.querySelector('.action-label');
+    if (actionLabel) actionLabel.textContent = 'Generating Video...';
+    else generateButton.textContent = 'Generating Video...';
     setTimeout(() => {
       generateButton.disabled = false;
-      generateButton.innerHTML = '<i data-lucide="film"></i>Generate Video';
+      if (actionLabel) actionLabel.textContent = 'Generate Video';
+      else generateButton.innerHTML = '<i data-lucide="film"></i>Generate Video';
       lucide.createIcons();
     }, 900);
   });

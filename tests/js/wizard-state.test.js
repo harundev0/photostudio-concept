@@ -9,10 +9,12 @@ vm.runInNewContext(source, context);
 const {
   createWizardState,
   nextStep,
+  previousStep,
   setControl,
   setImageSelected,
   canVisitStep,
   getStepView,
+  getPrimaryAction,
 } = context.module.exports;
 
 const state = createWizardState();
@@ -50,6 +52,17 @@ assert.equal(settings.completed.join(','), '1,2,3', 'frame steps become complete
 assert.equal(getStepView(settings).showFrameReview, true, 'video settings shows captured frame review');
 assert.equal(getStepView(settings).showCropPreview, false, 'video settings hides crop editor');
 assert.equal(getStepView(settings).showTopCapture, false, 'settings hides top capture action');
+
+const returnedToEndFrame = previousStep(settings);
+assert.equal(returnedToEndFrame.step, 3, 'Back from settings returns to End Frame');
+assert.equal(returnedToEndFrame.completed.join(','), '1,2,3', 'Back preserves captured frame progress');
+assert.equal(returnedToEndFrame.controls.horizontal, 3, 'Back preserves camera settings');
+assert.equal(previousStep(selected).step, 1, 'Back cannot move before Select Image');
+
+assert.equal(getPrimaryAction(selected).label, 'Continue to Start Frame', 'step 1 explains the next destination');
+assert.equal(getPrimaryAction(startFrame).label, 'Capture Start Frame', 'step 2 names the captured frame');
+assert.equal(getPrimaryAction(endFrame).label, 'Capture End Frame', 'step 3 names the captured frame');
+assert.equal(getPrimaryAction(settings).label, 'Generate Video', 'step 4 names the final action');
 
 const removed = setImageSelected(settings, false);
 assert.equal(removed.step, 1, 'removing image returns to Select Image');

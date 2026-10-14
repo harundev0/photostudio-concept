@@ -25,6 +25,10 @@
     return { ...state, step, completed };
   }
 
+  function previousStep(state) {
+    return { ...state, step: Math.max(1, state.step - 1) };
+  }
+
   function setControl(state, name, value) {
     return { ...state, controls: { ...state.controls, [name]: value } };
   }
@@ -51,12 +55,23 @@
     };
   }
 
+  function getPrimaryAction(state) {
+    return [
+      { label: 'Continue to Start Frame' },
+      { label: 'Capture Start Frame' },
+      { label: 'Capture End Frame' },
+      { label: 'Generate Video' },
+    ][state.step - 1];
+  }
+
   return {
     createWizardState,
     nextStep,
+    previousStep,
     setControl,
     setImageSelected,
     canVisitStep,
     getStepView,
+    getPrimaryAction,
   };
 });
